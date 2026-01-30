@@ -174,7 +174,7 @@ function displayQuestion() {
 
     document.getElementById('current-q').textContent = currentQuestion + 1;
     document.getElementById('progress').style.width = ((currentQuestion) / 10 * 100) + '%';
-    document.getElementById('category').textContent = `[${q.category}]`;
+    document.getElementById('category').textContent = '';
     document.getElementById('question').textContent = q.question;
 
     const optionsContainer = document.getElementById('options');
@@ -217,28 +217,7 @@ function showResults() {
     document.getElementById('total-score').textContent = totalScore;
     document.getElementById('progress').style.width = '100%';
 
-    // 레벨 결정
-    const levelEl = document.getElementById('result-level');
-    const descEl = document.getElementById('result-description');
-
-    if (totalScore >= 25) {
-        levelEl.textContent = '디지털 윤리 리더';
-        levelEl.className = 'result-level high';
-        descEl.textContent = '훌륭합니다! 아이가 디지털 세상에서 올바른 가치관을 갖고 있습니다. 지속적인 대화로 이 태도를 강화해 주세요.';
-    } else if (totalScore >= 18) {
-        levelEl.textContent = '성장하는 디지털 시민';
-        levelEl.className = 'result-level mid';
-        descEl.textContent = '기본적인 인식은 있으나, 일부 영역에서 보완이 필요합니다. 낮은 점수가 나온 영역에 대해 함께 이야기를 나눠보세요.';
-    } else {
-        levelEl.textContent = '디지털 윤리 교육 필요';
-        levelEl.className = 'result-level low';
-        descEl.textContent = '디지털 윤리에 대한 가정 내 대화가 필요합니다. 아이와 함께 \'우리 가족 디지털 약속\'을 만들어보세요.';
-    }
-
-    // 영역별 점수 표시
-    const areaScoresEl = document.getElementById('area-scores');
-    areaScoresEl.innerHTML = '';
-
+    // 부족한 영역 먼저 계산
     const areaNames = {
         "정보판단": "가짜뉴스/딥페이크 판단",
         "타인존중": "온라인 타인 존중",
@@ -247,6 +226,41 @@ function showResults() {
         "자기조절": "자기 조절 능력",
         "사회기여": "기술의 사회적 활용"
     };
+
+    let weakAreas = [];
+    for (const [area, data] of Object.entries(areaScores)) {
+        const percentage = (data.score / data.max) * 100;
+        if (percentage < 80) {
+            weakAreas.push(areaNames[area]);
+        }
+    }
+
+    // 레벨 결정
+    const levelEl = document.getElementById('result-level');
+    const descEl = document.getElementById('result-description');
+
+    let weakAreasText = '';
+    if (weakAreas.length > 0) {
+        weakAreasText = '\n\n보완이 필요한 영역: ' + weakAreas.join(', ');
+    }
+
+    if (totalScore >= 25) {
+        levelEl.textContent = '디지털 윤리 리더';
+        levelEl.className = 'result-level high';
+        descEl.textContent = '훌륭합니다! 아이가 디지털 세상에서 올바른 가치관을 갖고 있습니다. 지속적인 대화로 이 태도를 강화해 주세요.' + weakAreasText;
+    } else if (totalScore >= 18) {
+        levelEl.textContent = '성장하는 디지털 시민';
+        levelEl.className = 'result-level mid';
+        descEl.textContent = '기본적인 인식은 있으나, 일부 영역에서 보완이 필요합니다.' + weakAreasText;
+    } else {
+        levelEl.textContent = '디지털 윤리 교육 필요';
+        levelEl.className = 'result-level low';
+        descEl.textContent = '디지털 윤리에 대한 가정 내 대화가 필요합니다. 아이와 함께 \'우리 가족 디지털 약속\'을 만들어보세요.' + weakAreasText;
+    }
+
+    // 영역별 점수 표시
+    const areaScoresEl = document.getElementById('area-scores');
+    areaScoresEl.innerHTML = '';
 
     for (const [area, data] of Object.entries(areaScores)) {
         const percentage = (data.score / data.max) * 100;
