@@ -250,8 +250,62 @@ h1 {
 .result-description {
     text-align: center;
     line-height: 1.8;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     padding: 0 20px;
+}
+
+.weak-areas-box {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 142, 83, 0.2));
+    border: 2px solid #ff6b6b;
+    border-radius: 15px;
+    padding: 20px 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.weak-areas-box.hidden {
+    display: none;
+}
+
+.weak-areas-box h4 {
+    color: #ff6b6b;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.weak-areas-box h4::before {
+    content: "!";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #ff6b6b;
+    color: #1a1a2e;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.weak-areas-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.weak-area-tag {
+    background: rgba(255, 107, 107, 0.3);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 107, 107, 0.5);
 }
 
 .detail-section {

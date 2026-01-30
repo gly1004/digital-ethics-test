@@ -238,24 +238,32 @@ function showResults() {
     // 레벨 결정
     const levelEl = document.getElementById('result-level');
     const descEl = document.getElementById('result-description');
-
-    let weakAreasText = '';
-    if (weakAreas.length > 0) {
-        weakAreasText = '\n\n보완이 필요한 영역: ' + weakAreas.join(', ');
-    }
+    const weakAreasBox = document.getElementById('weak-areas-box');
 
     if (totalScore >= 25) {
         levelEl.textContent = '디지털 윤리 리더';
         levelEl.className = 'result-level high';
-        descEl.textContent = '훌륭합니다! 아이가 디지털 세상에서 올바른 가치관을 갖고 있습니다. 지속적인 대화로 이 태도를 강화해 주세요.' + weakAreasText;
+        descEl.textContent = '훌륭합니다! 아이가 디지털 세상에서 올바른 가치관을 갖고 있습니다. 지속적인 대화로 이 태도를 강화해 주세요.';
     } else if (totalScore >= 18) {
         levelEl.textContent = '성장하는 디지털 시민';
         levelEl.className = 'result-level mid';
-        descEl.textContent = '기본적인 인식은 있으나, 일부 영역에서 보완이 필요합니다.' + weakAreasText;
+        descEl.textContent = '기본적인 인식은 있으나, 일부 영역에서 보완이 필요합니다.';
     } else {
         levelEl.textContent = '디지털 윤리 교육 필요';
         levelEl.className = 'result-level low';
-        descEl.textContent = '디지털 윤리에 대한 가정 내 대화가 필요합니다. 아이와 함께 \'우리 가족 디지털 약속\'을 만들어보세요.' + weakAreasText;
+        descEl.textContent = '디지털 윤리에 대한 가정 내 대화가 필요합니다. 아이와 함께 \'우리 가족 디지털 약속\'을 만들어보세요.';
+    }
+
+    // 보완 필요 영역 박스 표시
+    if (weakAreas.length > 0) {
+        const tagsHtml = weakAreas.map(area => `<span class="weak-area-tag">${area}</span>`).join('');
+        weakAreasBox.innerHTML = `
+            <h4>보완이 필요한 영역</h4>
+            <div class="weak-areas-list">${tagsHtml}</div>
+        `;
+        weakAreasBox.classList.remove('hidden');
+    } else {
+        weakAreasBox.classList.add('hidden');
     }
 
     // 영역별 점수 표시
